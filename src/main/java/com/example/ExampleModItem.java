@@ -11,6 +11,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.Level;
 import org.jspecify.annotations.NonNull;
+import com.example.swift.SwiftBridge;
 
 public class ExampleModItem extends Item {
     public ExampleModItem(Properties properties) {
@@ -33,7 +34,9 @@ public class ExampleModItem extends Item {
 
     private static void showTitle(ServerPlayer player) {
         player.connection.send(new ClientboundSetTitlesAnimationPacket(10, 60, 20));
-        player.connection.send(new ClientboundSetTitleTextPacket(Component.literal("Title")));
+
+        String message = SwiftBridge.hello();
+        player.connection.send(new ClientboundSetTitleTextPacket(Component.literal(message)));
         player.connection.send(new ClientboundSetSubtitleTextPacket(Component.literal("Sub Title")));
     }
 }

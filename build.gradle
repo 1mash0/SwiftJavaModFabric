@@ -1,3 +1,5 @@
+import java.util.Locale
+
 plugins {
 	id 'net.fabricmc.fabric-loom' version "${loom_version}"
 	id 'maven-publish'
@@ -6,13 +8,55 @@ plugins {
 version = project.mod_version
 group = project.maven_group
 
+def swiftTargetName = "SwiftJavaModFabric"
+
+def generatedJavaDir = layout.projectDirectory.dir(
+    ".build/plugins/outputs/" +
+    "${projectDir.name.toLowerCase(Locale.ROOT)}/" +
+    "${swiftTargetName}/" +
+    "destination/JExtractSwiftPlugin/src/generated/java"
+)
+
+def jextract = tasks.register("jextract", Exec) {
+    description = "Build the Swift package and generate Java wrappers"
+
+    workingDir projectDir
+    commandLine "swift"
+
+    args "build", "--disable-experimental-prebuilts"
+
+    inputs.file file("Package.swift")
+    inputs.dir file("Sources/${swiftTargetName}")
+
+    outputs.dir generatedJavaDir
+}
+
+sourceSets {
+    main {
+        java {
+            // 公式サンプルと同じく、タスク出力とタスク依存を接続する
+            srcDir jextract
+
+            // IDEやGradleインポート時にも生成ソース位置を認識させる
+            srcDir generatedJavaDir
+        }
+    }
+}
+
+tasks.named("build") {
+	dependsOn jextract
+}
+
 repositories {
 	// Add repositories to retrieve artifacts from in here.
 	// You should only use this when depending on other mods because
 	// Loom adds the essential maven repositories to download Minecraft and libraries from automatically.
 	// See https://docs.gradle.org/current/userguide/declaring_repositories.html
 	// for more information about repositories.
+	mavenLocal()
 }
+
+def swiftLibraryDir = file(".build/out/Products/Debug").absolutePath
 
 loom {
 	splitEnvironmentSourceSets()
@@ -23,6 +67,19 @@ loom {
 			sourceSet sourceSets.client
 		}
 	}
+
+	runs {
+		client {
+			vmArgs "-Djava.library.path=${swiftLibraryDir}"
+			// ライブラリ読み込みの詳細を出す。動作確認後は削除可能
+            vmArgs "-Djextract.trace.downcalls=true"
+        }
+
+        server {
+            vmArgs "-Djava.library.path=${swiftLibraryDir}"
+            vmArgs "-Djextract.trace.downcalls=true"
+        }
+	}
 }
 
 dependencies {
@@ -32,6 +89,9 @@ dependencies {
 
 	// Fabric API. This is technically optional, but you probably want it anyway.
 	implementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_api_version}"
+
+	implementation "org.swift.swiftkit:swiftkit-core:1.0-SNAPSHOT"
+    implementation "org.swift.swiftkit:swiftkit-ffm:1.0-SNAPSHOT"
 }
 
 processResources {
