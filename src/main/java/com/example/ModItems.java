@@ -11,7 +11,7 @@ import java.util.function.Function;
 
 public class ModItems {
     public static final Item SUSPICIOUS_SUBSTANCE = register(ModItemIds.SUSPICIOUS_SUBSTANCE, Item::new, new Item.Properties());
-    public static final Item EXAMPLE_MOD_ITEM = register(ModItemIds.EXAMPLE_MOD_ITEM, ExampleModItem::new, new Item.Properties());
+    public static final Item SWIFT_BRIDGE_ITEM = register(ModItemIds.SWIFT_BRIDGE_ITEM, SwiftBridgeItem::new, new Item.Properties());
 
     public static Item register(ResourceKey<Item> itemKey, Function<Item.Properties, Item> itemFactory, Item.Properties settings) {
         Item item = itemFactory.apply(settings.setId(itemKey));
@@ -27,7 +27,7 @@ public class ModItems {
                 .modifyOutputEvent(CreativeModeTabs.INGREDIENTS)
                 .register((creativeTab) -> {
                     creativeTab.accept(ModItems.SUSPICIOUS_SUBSTANCE);
-                    creativeTab.accept(ModItems.EXAMPLE_MOD_ITEM);
+                    creativeTab.accept(ModItems.SWIFT_BRIDGE_ITEM);
                 });
     }
 

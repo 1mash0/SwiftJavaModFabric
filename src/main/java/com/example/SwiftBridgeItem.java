@@ -7,14 +7,8 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.level.Level;
 import com.example.swift.ModItemBridge;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-public class ExampleModItem extends Item {
-
-	public static final Logger LOGGER = LoggerFactory.getLogger("swift-java-mod-fabric");
-
-    public ExampleModItem(Properties properties) {
+public class SwiftBridgeItem extends Item {
+    public SwiftBridgeItem(Properties properties) {
         super(properties);
     }
 
