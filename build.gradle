@@ -170,14 +170,3 @@ publishing {
 		// retrieving dependencies.
 	}
 }
-
-// def runtimeClasspathConfig = configurations.named('runtimeClasspath')
-
-// tasks.register("printRuntimeClasspath") {
-//     doLast {
-// 		println("Runtime Classpath:")
-// 		println("--------------------------------------------------")
-//         println(runtimeClasspathConfig.get().asPath)
-// 		println("--------------------------------------------------")
-//     }
-// }

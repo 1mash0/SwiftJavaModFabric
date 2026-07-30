@@ -7,7 +7,7 @@ import net.minecraft.resources.Identifier;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.example.swift.*;
+import com.example.swift.SwiftBridge;
 
 public class ExampleMod implements ModInitializer {
 	public static final String MOD_ID = "swift-java-mod-fabric";
@@ -16,8 +16,7 @@ public class ExampleMod implements ModInitializer {
 	@Override
 	public void onInitialize() {
 		LOGGER.info("Hello Fabric world!");
-		String swiftMessage = SwiftBridge.hello();
-		LOGGER.info(swiftMessage);
+		LOGGER.info(SwiftBridge.hello());
 		ModItems.initialize();
 	}
 
