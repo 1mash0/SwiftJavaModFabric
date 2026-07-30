@@ -23,13 +23,41 @@ def jextract = tasks.register("jextract", Exec) {
     workingDir projectDir
     commandLine "swift"
 
-    args "build", "--disable-experimental-prebuilts"
+    args "build", "--disable-sandbox", "--disable-experimental-prebuilts"
 
     inputs.file file("Package.swift")
     inputs.dir file("Sources/${swiftTargetName}")
 
     outputs.dir generatedJavaDir
 }
+
+def swiftJavaClasspathFile = file(
+    "Sources/MinecraftJavaAPI/MinecraftJavaAPI.swift-java.classpath"
+)
+
+def writeSwiftJavaClasspath = tasks.register(
+    "writeSwiftJavaClasspath"
+) {
+    group = "swift"
+    description = "Write the Fabric compile classpath for SwiftJavaPlugin"
+
+    inputs.files(sourceSets.main.compileClasspath)
+    outputs.file(swiftJavaClasspathFile)
+
+    doLast {
+        swiftJavaClasspathFile.parentFile.mkdirs()
+
+        swiftJavaClasspathFile.text =
+            sourceSets.main.compileClasspath.files
+                .collect { it.absolutePath }
+                .join(File.pathSeparator)
+    }
+}
+
+tasks.named("jextract") {
+	dependsOn writeSwiftJavaClasspath
+}
+
 
 sourceSets {
     main {
@@ -142,3 +170,14 @@ publishing {
 		// retrieving dependencies.
 	}
 }
+
+// def runtimeClasspathConfig = configurations.named('runtimeClasspath')
+
+// tasks.register("printRuntimeClasspath") {
+//     doLast {
+// 		println("Runtime Classpath:")
+// 		println("--------------------------------------------------")
+//         println(runtimeClasspathConfig.get().asPath)
+// 		println("--------------------------------------------------")
+//     }
+// }
