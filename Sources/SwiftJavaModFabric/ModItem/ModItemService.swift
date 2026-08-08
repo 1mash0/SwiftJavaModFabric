@@ -2,11 +2,11 @@ import MinecraftJavaAPI
 import SwiftJava
 
 enum ModItemService {
-    static func showTitle(_ player: ServerPlayer) {
+    static func showTitle(_ player: ServerPlayer, title: String, subtitle: String? = nil) {
         guard 
             let component = try? JavaClass<Component>(),
-            let title = component.nullToEmpty(SwiftBridge.hello()),
-            let subtitle = component.nullToEmpty("Sub Title")
+            let title = component.nullToEmpty(title),
+            let subtitle = component.nullToEmpty(subtitle ?? "")
         else {
             return
         }

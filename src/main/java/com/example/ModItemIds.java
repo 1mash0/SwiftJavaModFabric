@@ -10,6 +10,7 @@ public class ModItemIds {
     public static final ResourceKey<Item> SWIFT_BRIDGE_ITEM = create("swift_bridge_item");
     public static final ResourceKey<Item> WALKING_SPEED_ITEM = create("walking_speed_item");
     public static final ResourceKey<Item> BLOCK_BREAKER_ITEM = create("block_breaker_item");
+    public static final ResourceKey<Item> IOSDC_BADGE_ITEM = create("iosdc_badge_item");
 
     public static ResourceKey<Item> create(String name) {
         return ResourceKey.create(Registries.ITEM, Identifier.fromNamespaceAndPath(ExampleMod.MOD_ID, name));

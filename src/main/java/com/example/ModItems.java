@@ -14,6 +14,7 @@ public class ModItems {
     public static final Item SWIFT_BRIDGE_ITEM = register(ModItemIds.SWIFT_BRIDGE_ITEM, SwiftBridgeItem::new, new Item.Properties());
     public static final Item WALKING_SPEED_ITEM = register(ModItemIds.WALKING_SPEED_ITEM, WalkingSpeedItem::new, new Item.Properties());
     public static final Item BLOCK_BREAKER_ITEM = register(ModItemIds.BLOCK_BREAKER_ITEM, BlockBreakerItem::new, new Item.Properties());
+    public static final Item IOSDC_BADGE_ITEM = register(ModItemIds.IOSDC_BADGE_ITEM, IOSDCBadgeItem::new, new Item.Properties());
 
     public static Item register(ResourceKey<Item> itemKey, Function<Item.Properties, Item> itemFactory, Item.Properties settings) {
         Item item = itemFactory.apply(settings.setId(itemKey));
@@ -32,6 +33,7 @@ public class ModItems {
                     creativeTab.accept(ModItems.SWIFT_BRIDGE_ITEM);
                     creativeTab.accept(ModItems.WALKING_SPEED_ITEM);
                     creativeTab.accept(ModItems.BLOCK_BREAKER_ITEM);
+                    creativeTab.accept(ModItems.IOSDC_BADGE_ITEM);
                 });
     }
 

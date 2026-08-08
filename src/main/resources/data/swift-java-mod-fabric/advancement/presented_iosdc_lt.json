@@ -1,0 +1,19 @@
+{
+  "parent": "minecraft:adventure/root",
+  "display": {
+    "icon": {
+      "id": "swift-java-mod-fabric:iosdc_badge_item"
+    },
+    "title": "iOSDCでLTをした",
+    "description": "SwiftでMinecraft JavaのMODを動かした",
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "criteria": {
+    "presented_iosdc_lt": {
+      "trigger": "minecraft:impossible"
+    }
+  }
+}

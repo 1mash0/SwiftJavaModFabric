@@ -18,7 +18,7 @@ public enum ModItemBridge {
             return 2
         }
 
-        ModItemService.showTitle(serverPlayer)
+        ModItemService.showTitle(serverPlayer, title: SwiftBridge.hello(), subtitle: "Sub Title")
 
         return 0
     }
@@ -101,5 +101,40 @@ public enum ModItemBridge {
                 }
             }
         }
+    }
+
+    public static func finishPresentation(
+        _ levelObject: JavaObject,
+        _ playerObject: JavaObject
+    ) -> Int32 {
+        guard
+            let level = levelObject.as(Level.self),
+            !level.isClientSide(),
+            let player = playerObject.as(ServerPlayer.self),
+            let server = level.getServer(),
+            let advancementManager = server.getAdvancements(),
+            let identifierClass = try? JavaClass<Identifier>(),
+            let advancementId = identifierClass.fromNamespaceAndPath(
+                "swift-java-mod-fabric",
+                "presented_iosdc_lt"
+            ),
+            let advancement = advancementManager.get(advancementId),
+            let playerAdvancements = player.getAdvancements()
+        else {
+            return 0
+        }
+
+        let award = playerAdvancements.award(
+            advancement,
+            "presented_iosdc_lt"
+        )
+
+        if !award {
+            return 3
+        }
+
+        ModItemService.showTitle(player, title: "ありがとうございました！")
+
+        return 1
     }
 }
