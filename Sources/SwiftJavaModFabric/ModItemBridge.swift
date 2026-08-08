@@ -21,4 +21,35 @@ public enum ModItemBridge {
 
         return 0
     }
+
+    public static func changeWalkingSpeed(
+        _ levelObject: JavaObject,
+        _ playerObject: JavaObject
+    ) -> Int32 {
+        let normalWalkingSpeed = 0.1
+        let boostedWalkingSpeed = 2.0
+
+        guard
+            let level = levelObject.as(Level.self),
+            !level.isClientSide(),
+            let player = playerObject.as(ServerPlayer.self),
+            let attributesClass = try? JavaClass<Attributes>(),
+            let movementSpeedAttribute = attributesClass.MOVEMENT_SPEED,
+            let movementSpeed = player.getAttribute(movementSpeedAttribute)
+        else {
+            return 3 // FAIL
+        }
+
+        let currentBaseValue = movementSpeed.getBaseValue()
+
+        let newBaseValue = if currentBaseValue < boostedWalkingSpeed {
+            boostedWalkingSpeed
+        } else {
+            normalWalkingSpeed
+        }
+
+        movementSpeed.setBaseValue(newBaseValue)
+
+        return 1 // SUCCESS
+    }
 }
