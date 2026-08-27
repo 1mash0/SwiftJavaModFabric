@@ -23,11 +23,6 @@ public class ModItems {
         return item;
     }
 
-    public static Item register(ResourceKey<Item> itemKey, Item item) {
-        Registry.register(BuiltInRegistries.ITEM, itemKey, item);
-        return item;
-    }
-
     public static void initialize() {}
 
     public static void registerCreativeTab() {

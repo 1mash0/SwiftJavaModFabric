@@ -1,3 +1,4 @@
+import MinecraftJavaAPI
 import SwiftJava
 
 @JavaClass("net.minecraft.client.Minecraft")
@@ -92,4 +93,27 @@ open class MinecraftBlock: JavaObject {
 open class MinecraftMutableComponent: JavaObject {
     @JavaMethod
     open func getString() -> String
+}
+
+@JavaClass("net.minecraft.core.registries.BuiltInRegistries")
+open class MinecraftBuiltInRegistries: JavaObject {}
+
+@JavaInterface(
+    "net.minecraft.core.DefaultedRegistry",
+    extends: Registry<Item>.self
+)
+struct MinecraftItemDefaultedRegistry {}
+
+extension JavaClass<MinecraftBuiltInRegistries> {
+    @JavaStaticField(isFinal: true)
+    var ITEM: MinecraftItemDefaultedRegistry?
+}
+
+extension JavaClass {
+    @JavaStaticMethod
+    func register(
+        _ registry: Registry<Item>?,
+        _ key: ResourceKey<Item>?,
+        _ value: JavaObject?
+    ) -> JavaObject? where ObjectType == Registry<Item>
 }

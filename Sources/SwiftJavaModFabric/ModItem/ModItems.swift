@@ -14,12 +14,25 @@ public enum ModItems {
     }()
 
     public static func initialize() {
-        let modItemsClass = try! JavaClass<JavaModItems>()
+        let builtInRegistriesClass = try! JavaClass<MinecraftBuiltInRegistries>()
+        let registryClass = try! JavaClass<Registry<Item>>()
 
-        _ = modItemsClass.register(ModItemIds.PURE_SWIFT_ITEM, PURE_SWIFT_ITEM)
+        guard let defaultedRegistry = builtInRegistriesClass.ITEM else {
+            return
+        }
+
+        let itemRegistry = defaultedRegistry.as(Registry<Item>.self)
+
+        _ = registryClass.register(
+            itemRegistry,
+            ModItemIds.PURE_SWIFT_ITEM,
+            PURE_SWIFT_ITEM
+        )
     }
 
+    
     public static func registerCreativeTab() {
+        // CreativeModeTabEvents の callback 登録だけ Java helper に委譲している。
         let modItemsClass = try! JavaClass<JavaModItems>()
 
         _ = modItemsClass.addToIngredientsTab([PURE_SWIFT_ITEM])
