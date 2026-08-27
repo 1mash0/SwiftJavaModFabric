@@ -7,6 +7,7 @@ import net.minecraft.resources.Identifier;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.example.item.ModItems;
 import com.example.swift.SwiftBridge;
 
 public class ExampleMod implements ModInitializer {

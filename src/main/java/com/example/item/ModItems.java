@@ -1,4 +1,4 @@
-package com.example;
+package com.example.item;
 
 import net.fabricmc.fabric.api.creativetab.v1.CreativeModeTabEvents;
 import net.minecraft.core.Registry;

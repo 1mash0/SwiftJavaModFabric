@@ -1,4 +1,4 @@
-package com.example;
+package com.example.item;
 
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;

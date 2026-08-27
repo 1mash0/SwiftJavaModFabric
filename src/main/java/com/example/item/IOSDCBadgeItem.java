@@ -1,4 +1,4 @@
-package com.example;
+package com.example.item;
 
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;

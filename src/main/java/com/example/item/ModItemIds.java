@@ -1,4 +1,6 @@
-package com.example;
+package com.example.item;
+
+import com.example.ExampleMod;
 
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.Identifier;

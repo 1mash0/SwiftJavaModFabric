@@ -1,4 +1,4 @@
-package com.example;
+package com.example.item;
 
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
@@ -7,8 +7,8 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.level.Level;
 import com.example.swift.ModItemBridge;
 
-public class WalkingSpeedItem extends Item {
-    public WalkingSpeedItem(Properties properties) {
+public class SwiftBridgeItem extends Item {
+    public SwiftBridgeItem(Properties properties) {
         super(properties);
     }
 
@@ -18,7 +18,7 @@ public class WalkingSpeedItem extends Item {
         Player player,
         InteractionHand hand
     ) {
-        int result = ModItemBridge.changeWalkingSpeed(level, player);
+        int result = ModItemBridge.onUse(level, player);
         return switch (result) {
             case 0 -> InteractionResult.PASS;
             case 1 -> InteractionResult.SUCCESS;
