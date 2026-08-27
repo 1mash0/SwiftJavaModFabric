@@ -26,11 +26,15 @@ public enum ClockHud {
                 .second(.twoDigits)
         )
 
+        let padding: Int32 = 8
+        let x = graphics.guiWidth() - font.width(time) - padding
+        let y: Int32 = 8
+
         graphics.text(
             font,
             time,
-            8,
-            8,
+            x,
+            y,
             -1,
             true
         )

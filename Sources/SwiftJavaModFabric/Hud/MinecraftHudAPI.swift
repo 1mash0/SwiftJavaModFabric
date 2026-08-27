@@ -1,10 +1,16 @@
 import SwiftJava
 
 @JavaClass("net.minecraft.client.gui.Font")
-open class MinecraftFont: JavaObject {}
+open class MinecraftFont: JavaObject {
+    @JavaMethod
+    open func width(_ text: String) -> Int32
+}
 
 @JavaClass("net.minecraft.client.gui.GuiGraphicsExtractor")
 open class MinecraftGuiGraphicsExtractor: JavaObject {
+    @JavaMethod
+    open func guiWidth() -> Int32
+
     @JavaMethod
     open func text(
         _ font: MinecraftFont?,
