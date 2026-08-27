@@ -1,0 +1,6 @@
+{
+    "parent": "minecraft:item/generated",
+    "textures": {
+        "layer0": "swift-java-mod-fabric:item/swift_bridge_item"
+    }
+}

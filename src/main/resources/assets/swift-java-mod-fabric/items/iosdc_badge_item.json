@@ -1,0 +1,6 @@
+{
+    "model": {
+        "type": "minecraft:model",
+        "model": "swift-java-mod-fabric:item/iosdc_badge_item"
+    }
+}
