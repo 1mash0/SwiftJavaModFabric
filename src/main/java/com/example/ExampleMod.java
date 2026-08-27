@@ -17,7 +17,14 @@ public class ExampleMod implements ModInitializer {
 	public void onInitialize() {
 		LOGGER.info("Hello Fabric world!");
 		LOGGER.info(SwiftBridge.hello());
+
+		// Initialize mod items
 		ModItems.initialize();
+		com.example.swift.ModItems.initialize();
+
+		// Register creative tabs
+		ModItems.registerCreativeTab();
+		com.example.swift.ModItems.registerCreativeTab();
 	}
 
 	public static Identifier id(String path) {

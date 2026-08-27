@@ -23,19 +23,33 @@ public class ModItems {
         return item;
     }
 
-    public static void initialize() {
-        // Get the event for modifying entries in the ingredients group.
-        // And register an event handler that adds our suspicious item to the ingredients group.
+    public static Item register(ResourceKey<Item> itemKey, Item item) {
+        Registry.register(BuiltInRegistries.ITEM, itemKey, item);
+        return item;
+    }
+
+    public static void initialize() {}
+
+    public static void registerCreativeTab() {
+        addToIngredientsTab(
+                SUSPICIOUS_SUBSTANCE,
+                SWIFT_BRIDGE_ITEM,
+                WALKING_SPEED_ITEM,
+                BLOCK_BREAKER_ITEM,
+                IOSDC_BADGE_ITEM
+        );
+    }
+
+    public static void addToIngredientsTab(Item... items) {
         CreativeModeTabEvents
                 .modifyOutputEvent(CreativeModeTabs.INGREDIENTS)
                 .register((creativeTab) -> {
-                    creativeTab.accept(ModItems.SUSPICIOUS_SUBSTANCE);
-                    creativeTab.accept(ModItems.SWIFT_BRIDGE_ITEM);
-                    creativeTab.accept(ModItems.WALKING_SPEED_ITEM);
-                    creativeTab.accept(ModItems.BLOCK_BREAKER_ITEM);
-                    creativeTab.accept(ModItems.IOSDC_BADGE_ITEM);
+                    for (Item item : items) {
+                        creativeTab.accept(item);
+                    }
                 });
     }
+
 
     private ModItems() {}
 }
