@@ -1,7 +1,7 @@
 import MinecraftJavaAPI
 import SwiftJava
 
-@JavaClass("com.example.ModItems")
+@JavaClass("com.example.item.ModItems")
 open class JavaModItems: JavaObject {}
 
 extension JavaClass<JavaModItems> {
