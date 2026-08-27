@@ -1,8 +1,8 @@
 import Foundation
 import SwiftJava
 
-public enum ClockHud {
-    public static func render(
+enum ClockHud {
+    static func render(
         _ graphicsObject: JavaObject
     ) {
         guard
