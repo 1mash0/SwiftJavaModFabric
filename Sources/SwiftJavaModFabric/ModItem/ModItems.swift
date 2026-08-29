@@ -9,8 +9,7 @@ public enum ModItems {
         let configuredProperties = properties.setId(
             ModItemIds.PURE_SWIFT_ITEM
         )
-
-        return Item(configuredProperties)
+        return SwiftItem(configuredProperties)
     }()
 
     public static func initialize() {
