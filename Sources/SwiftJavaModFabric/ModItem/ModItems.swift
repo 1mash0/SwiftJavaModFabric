@@ -4,10 +4,10 @@ import SwiftJava
 public enum ModItems {
     // nonisolated(unsafe) でなくても良い
     // その場合は `initialize()` 内で Item を生成する必要がある
-    nonisolated(unsafe) static let PURE_SWIFT_ITEM: Item = {
+    nonisolated(unsafe) static let pureSwiftItem: Item = {
         let properties = ItemProperties()
         let configuredProperties = properties.setId(
-            ModItemIds.PURE_SWIFT_ITEM
+            ModItemIds.pureSwiftItem
         )
         return SwiftItem(configuredProperties)
     }()
@@ -24,8 +24,8 @@ public enum ModItems {
 
         _ = registryClass.register(
             itemRegistry,
-            ModItemIds.PURE_SWIFT_ITEM,
-            PURE_SWIFT_ITEM
+            ModItemIds.pureSwiftItem,
+            pureSwiftItem
         )
     }
 
@@ -34,6 +34,6 @@ public enum ModItems {
         // CreativeModeTabEvents の callback 登録だけ Java helper に委譲している。
         let modItemsClass = try! JavaClass<JavaModItems>()
 
-        _ = modItemsClass.addToIngredientsTab([PURE_SWIFT_ITEM])
+        _ = modItemsClass.addToIngredientsTab([pureSwiftItem])
     }
 }

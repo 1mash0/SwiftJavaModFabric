@@ -1,5 +1,5 @@
 {
-  "originHash" : "297e6e16fe73cb9593bd9cbea5797061cc0077b3143def73c3e22151eaa04574",
+  "originHash" : "9ea1885ecf68d9c772e643ebfc0cf73a456b5af6f49766af069488336470a703",
   "pins" : [
     {
       "identity" : "swift-argument-parser",
@@ -25,7 +25,7 @@
       "location" : "https://github.com/swiftlang/swift-java",
       "state" : {
         "branch" : "main",
-        "revision" : "c72f032f107fe007af597b65dd7ff4daad3601e9"
+        "revision" : "a736a64e18a85f55f267427a3c9de60ae8377b7a"
       }
     },
     {

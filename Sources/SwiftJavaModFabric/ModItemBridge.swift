@@ -115,7 +115,7 @@ public enum ModItemBridge {
             let advancementManager = server.getAdvancements(),
             let identifierClass = try? JavaClass<Identifier>(),
             let advancementId = identifierClass.fromNamespaceAndPath(
-                "swift-java-mod-fabric",
+                modID,
                 "presented_iosdc_lt"
             ),
             let advancement = advancementManager.get(advancementId),

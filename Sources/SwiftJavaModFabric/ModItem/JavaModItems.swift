@@ -9,5 +9,11 @@ open class JavaModItems: JavaObject {}
 
 extension JavaClass<JavaModItems> {
     @JavaStaticMethod
+    func initialize()
+
+    @JavaStaticMethod
+    func registerCreativeTab()
+    
+    @JavaStaticMethod
     func addToIngredientsTab(_ items: [Item?])
 }

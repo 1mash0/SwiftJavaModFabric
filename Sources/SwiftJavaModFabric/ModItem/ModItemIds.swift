@@ -1,10 +1,28 @@
 import MinecraftJavaAPI
 import SwiftJava
 
-enum ModItemIds {
-    private static let modId = "swift-java-mod-fabric"
+public enum ModItemIds {
+    public static var suspiciousSubstance: ResourceKey<Item> {
+        create("suspicious_substance")
+    }
 
-    static var PURE_SWIFT_ITEM: ResourceKey<Item> {
+    public static var swiftBridgeItem: ResourceKey<Item> {
+        create("swift_bridge_item")
+    }
+
+    public static var walkingSpeedItem: ResourceKey<Item> {
+        create("walking_speed_item")
+    }
+
+    public static var blockBreakerItem: ResourceKey<Item> {
+        create("block_breaker_item")
+    }
+
+    public static var iosdcBadgeItem: ResourceKey<Item> {
+        create("iosdc_badge_item")
+    }
+
+    static var pureSwiftItem: ResourceKey<Item> {
         create("pure_swift_item")
     }
 
@@ -13,7 +31,7 @@ enum ModItemIds {
         let registriesClass = try! JavaClass<Registries>()
         let resourceKeyClass = try! JavaClass<ResourceKey<Item>>()
 
-        let identifier = identifierClass.fromNamespaceAndPath(modId, name)
+        let identifier = identifierClass.fromNamespaceAndPath(modID, name)
 
         return resourceKeyClass.create(
             registriesClass.ITEM,

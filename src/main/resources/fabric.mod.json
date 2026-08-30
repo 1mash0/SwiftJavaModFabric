@@ -16,10 +16,10 @@
 	"environment": "*",
 	"entrypoints": {
 		"main": [
-			"com.example.ExampleMod"
+			"com.example.swift.SwiftJavaModFabric::initializeMod"
 		],
 		"client": [
-			"com.example.client.ExampleModClient"
+			"com.example.swift.SwiftJavaModFabric::initializeClientMod"
 		]
 	},
 	"mixins": [

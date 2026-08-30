@@ -1,21 +1,19 @@
 package com.example.client;
 
-import net.fabricmc.api.ClientModInitializer;
-
 import net.fabricmc.fabric.api.client.rendering.v1.hud.HudElementRegistry;
 import net.minecraft.resources.Identifier;
 
-import com.example.ExampleMod;
 import com.example.swift.HudRenderer;
 
-public class ExampleModClient implements ClientModInitializer {
-    @Override
-    public void onInitializeClient() {
+public class HudRegistration {
+    public static void register(Identifier id) {
         HudElementRegistry.addLast(
-            Identifier.fromNamespaceAndPath(ExampleMod.MOD_ID, "hud"),
+            id,
             (graphics, deltaTracker) -> {
                 HudRenderer.render(graphics);
             }
         );
     }
+
+    private HudRegistration() {}
 }
