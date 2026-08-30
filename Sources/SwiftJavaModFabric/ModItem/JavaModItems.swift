@@ -4,16 +4,22 @@ import SwiftJava
 // CreativeModeTabEvents の callback 登録を行う Java helper の wrapper。
 // Swift の closure から Java callback interface 実装を直接生成できないため、
 // callback 境界だけ Java 側に残している。
-@JavaClass("com.example.item.ModItems")
-open class JavaModItems: JavaObject {}
+@JavaClass("com.example.item.CreativeTabRegistration")
+open class JavaCreativeTabRegistration: JavaObject {}
 
-extension JavaClass<JavaModItems> {
-    @JavaStaticMethod
-    func initialize()
-
-    @JavaStaticMethod
-    func registerCreativeTab()
-    
+extension JavaClass<JavaCreativeTabRegistration> {
     @JavaStaticMethod
     func addToIngredientsTab(_ items: [Item?])
 }
+
+@JavaClass("com.example.item.SwiftBridgeItem", extends: Item.self)
+open class SwiftBridgeItem: Item {}
+
+@JavaClass("com.example.item.WalkingSpeedItem", extends: Item.self)
+open class WalkingSpeedItem: Item {}
+
+@JavaClass("com.example.item.BlockBreakerItem", extends: Item.self)
+open class BlockBreakerItem: Item {}
+
+@JavaClass("com.example.item.IOSDCBadgeItem", extends: Item.self)
+open class IOSDCBadgeItem: Item {}

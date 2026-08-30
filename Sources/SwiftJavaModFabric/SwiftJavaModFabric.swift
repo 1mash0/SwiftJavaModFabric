@@ -12,17 +12,7 @@ let modID = "swift-java-mod-fabric"
 public func initializeMod() {
     ModLogger.info("Hello Fabric world from Swift!")
 
-    let javaModItemsClass = try! JavaClass<JavaModItems>()
-
-    // Java側で実装しているItemを初期化
-    javaModItemsClass.initialize()
-    // Swift側で実装しているItemを初期化
-    ModItems.initialize()
-
-    // Java側で実装しているItemをクリエイティブタブに登録
-    javaModItemsClass.registerCreativeTab()
-    // Swift側で実装しているItemをクリエイティブタブに登録
-    ModItems.registerCreativeTab()
+    ModItem.initialize()
 }
 
 public func initializeClientMod() {

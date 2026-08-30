@@ -5,6 +5,9 @@ import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.Level;
+
+import org.jspecify.annotations.NonNull;
+
 import com.example.swift.ModItemBridge;
 
 public class WalkingSpeedItem extends Item {
@@ -13,7 +16,7 @@ public class WalkingSpeedItem extends Item {
     }
 
     @Override
-    public InteractionResult use(
+    public @NonNull InteractionResult use(
         Level level,
         Player player,
         InteractionHand hand
