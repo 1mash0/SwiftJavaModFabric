@@ -13,54 +13,42 @@ public enum ModItemBridge {
             let hand = handObject.as(FabricInteractionHand.self),
             let itemStack = player.getItemInHand(hand),
             let heldItem = itemStack.getItem(),
-            let modItem = Self.modItem(for: heldItem)
+            let modItem = Self.modItem(for: heldItem),
+            let itemType = modItem.itemType
         else {
             return nil
         }
 
-        let result: Int32
-        switch modItem {
-            case .swiftBridgeItem:
-                result = onUse(levelObject, playerObject)
-            case .walkingSpeedItem:
-                result = changeWalkingSpeed(levelObject, playerObject)
-            case .iosdcBadgeItem:
-                result = finishPresentation(levelObject, playerObject)
-            case .blockBreakerItem, .pureSwiftItem:
-                return nil
-        }
+        let result = itemType.onUse(levelObject, playerObject)
 
         return interactionResult(for: result)
     }
 
+    public static func modifyCreativeTab(
+        _ outputObject: JavaObject
+    ) {
+        guard let output = outputObject.as(FabricCreativeModeTabOutput.self) else {
+            return
+        }
+
+        for modItem in ModItem.allCases {
+            guard
+                let item = modItem.registeredItem,
+                let itemLike = item.as(MinecraftItemLike.self)
+            else {
+                continue
+            }
+            output.accept(itemLike)
+        }
+    }
+
     private static func modItem(for item: Item) -> ModItem? {
         ModItem.allCases.first { modItem in
-            guard let registeredItem = registeredItem(for: modItem) else {
+            guard let registeredItem = modItem.registeredItem else {
                 return false
             }
             return item.equals(registeredItem)
         }
-    }
-
-    private static func registeredItem(
-        for modItem: ModItem
-    ) -> Item? {
-        let identifierClass = try! JavaClass<Identifier>()
-        let builInRegistriesClass = try! JavaClass<MinecraftBuiltInRegistries>()
-
-        let identifier = identifierClass.fromNamespaceAndPath(
-            modID,
-            modItem.rawValue
-        )
-
-        guard
-            let defaultedRegistry = builInRegistriesClass.ITEM,
-            let itemRegistry = defaultedRegistry.as(Registry<Item>.self)
-        else {
-            return nil
-        }
-
-        return itemRegistry.getValue(identifier)
     }
 
     private static func interactionResult(
@@ -76,57 +64,6 @@ public enum ModItemBridge {
             case 3: interactionResultClass.FAIL?.as(InteractionResult.self)
             default: nil
         }
-    }
-
-    public static func onUse(_ levelObject: JavaObject, _ playerObject: JavaObject) -> Int32 {
-        let level = Level(javaThis: levelObject.javaThis, environment: levelObject.javaEnvironment)
-
-        let message = try! JavaClass<Component>()
-
-        // `literal` を使うと依存パッケージが増えるため、`nullToEmpty` を使う。
-        if let message = try? JavaClass<Component>().nullToEmpty("テスト"), !level.isClientSide() {
-            let player = Player(javaThis: playerObject.javaThis, environment: playerObject.javaEnvironment)
-            player.sendOverlayMessage(message)
-        }
-
-        guard let serverPlayer = playerObject.as(ServerPlayer.self) else {
-            return 2
-        }
-
-        ModItemService.showTitle(serverPlayer, title: SwiftBridge.hello(), subtitle: "Sub Title")
-
-        return 0
-    }
-
-    public static func changeWalkingSpeed(
-        _ levelObject: JavaObject,
-        _ playerObject: JavaObject
-    ) -> Int32 {
-        let normalWalkingSpeed = 0.1
-        let boostedWalkingSpeed = 2.0
-
-        guard
-            let level = levelObject.as(Level.self),
-            !level.isClientSide(),
-            let player = playerObject.as(ServerPlayer.self),
-            let attributesClass = try? JavaClass<Attributes>(),
-            let movementSpeedAttribute = attributesClass.MOVEMENT_SPEED,
-            let movementSpeed = player.getAttribute(movementSpeedAttribute)
-        else {
-            return 3 // FAIL
-        }
-
-        let currentBaseValue = movementSpeed.getBaseValue()
-
-        let newBaseValue = if currentBaseValue < boostedWalkingSpeed {
-            boostedWalkingSpeed
-        } else {
-            normalWalkingSpeed
-        }
-
-        movementSpeed.setBaseValue(newBaseValue)
-
-        return 1 // SUCCESS
     }
 
     public static func onPlayerTick(_ playerObject: JavaObject) {
@@ -176,40 +113,5 @@ public enum ModItemBridge {
                 }
             }
         }
-    }
-
-    public static func finishPresentation(
-        _ levelObject: JavaObject,
-        _ playerObject: JavaObject
-    ) -> Int32 {
-        guard
-            let level = levelObject.as(Level.self),
-            !level.isClientSide(),
-            let player = playerObject.as(ServerPlayer.self),
-            let server = level.getServer(),
-            let advancementManager = server.getAdvancements(),
-            let identifierClass = try? JavaClass<Identifier>(),
-            let advancementId = identifierClass.fromNamespaceAndPath(
-                modID,
-                "presented_iosdc_lt"
-            ),
-            let advancement = advancementManager.get(advancementId),
-            let playerAdvancements = player.getAdvancements()
-        else {
-            return 0
-        }
-
-        let award = playerAdvancements.award(
-            advancement,
-            "presented_iosdc_lt"
-        )
-
-        if !award {
-            return 3
-        }
-
-        ModItemService.showTitle(player, title: "ありがとうございました！")
-
-        return 1
     }
 }

@@ -4,9 +4,21 @@ import SwiftJava
 enum ModItem: String, CaseIterable {
     case swiftBridgeItem = "swift_bridge_item"
     case walkingSpeedItem = "walking_speed_item"
-    case blockBreakerItem = "block_breaker_item"
     case iosdcBadgeItem = "iosdc_badge_item"
     case pureSwiftItem = "pure_swift_item"
+
+    var itemType: (any SwiftItemProtocol.Type)? {
+        switch self {
+            case .swiftBridgeItem:
+                return SwiftBridgeItem.self
+            case .walkingSpeedItem:
+                return WalkingSpeedItem.self
+            case .iosdcBadgeItem:
+                return IOSDCBadgeItem.self
+            case .pureSwiftItem:
+                return SwiftItem.self
+        }
+    }
 
     static func initialize() {
         let builtInRegistriesClass = try! JavaClass<MinecraftBuiltInRegistries>()
@@ -30,11 +42,6 @@ enum ModItem: String, CaseIterable {
                 item
             )
         }
-
-        // CreativeModeTabEvents の callback 登録だけ Java helper に委譲している。
-        let creativeTabRegistrationClass = 
-            try! JavaClass<JavaCreativeTabRegistration>()
-        _ = creativeTabRegistrationClass.addToIngredientsTab(allItems.map { $0.item })
     }
 
     private func makeKey() -> ResourceKey<Item> {
@@ -58,12 +65,31 @@ enum ModItem: String, CaseIterable {
             return SwiftBridgeItem(properties)
         case .walkingSpeedItem:
             return WalkingSpeedItem(properties)
-        case .blockBreakerItem:
-            return BlockBreakerItem(properties)
         case .iosdcBadgeItem:
             return IOSDCBadgeItem(properties)
         case .pureSwiftItem:
             return SwiftItem(properties)
         }
+    }
+}
+
+extension ModItem {
+    var registeredItem: Item? {
+        let identifierClass = try! JavaClass<Identifier>()
+        let builInRegistriesClass = try! JavaClass<MinecraftBuiltInRegistries>()
+
+        let identifier = identifierClass.fromNamespaceAndPath(
+            modID,
+            self.rawValue
+        )
+
+        guard
+            let defaultedRegistry = builInRegistriesClass.ITEM,
+            let itemRegistry = defaultedRegistry.as(Registry<Item>.self)
+        else {
+            return nil
+        }
+
+        return itemRegistry.getValue(identifier)
     }
 }

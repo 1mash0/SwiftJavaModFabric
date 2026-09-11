@@ -1,6 +1,0 @@
-{
-    "parent": "minecraft:item/generated",
-    "textures": {
-        "layer0": "swift-java-mod-fabric:item/block_breaker_item"
-    }
-}
