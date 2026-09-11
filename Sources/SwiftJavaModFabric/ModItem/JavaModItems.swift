@@ -12,14 +12,5 @@ extension JavaClass<JavaCreativeTabRegistration> {
     func addToIngredientsTab(_ items: [Item?])
 }
 
-@JavaClass("com.example.item.SwiftBridgeItem", extends: Item.self)
-open class SwiftBridgeItem: Item {}
-
-@JavaClass("com.example.item.WalkingSpeedItem", extends: Item.self)
-open class WalkingSpeedItem: Item {}
-
 @JavaClass("com.example.item.BlockBreakerItem", extends: Item.self)
 open class BlockBreakerItem: Item {}
-
-@JavaClass("com.example.item.IOSDCBadgeItem", extends: Item.self)
-open class IOSDCBadgeItem: Item {}

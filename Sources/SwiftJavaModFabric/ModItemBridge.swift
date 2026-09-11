@@ -3,6 +3,81 @@ import MinecraftJavaAPI
 import SwiftJava
 
 public enum ModItemBridge {
+    public static func onItemUse(
+        _ levelObject: JavaObject,
+        _ playerObject: JavaObject,
+        _ handObject: JavaObject
+    ) -> InteractionResult? {
+        guard
+            let player = playerObject.as(FabricInteractionPlayer.self),
+            let hand = handObject.as(FabricInteractionHand.self),
+            let itemStack = player.getItemInHand(hand),
+            let heldItem = itemStack.getItem(),
+            let modItem = Self.modItem(for: heldItem)
+        else {
+            return nil
+        }
+
+        let result: Int32
+        switch modItem {
+            case .swiftBridgeItem:
+                result = onUse(levelObject, playerObject)
+            case .walkingSpeedItem:
+                result = changeWalkingSpeed(levelObject, playerObject)
+            case .iosdcBadgeItem:
+                result = finishPresentation(levelObject, playerObject)
+            case .blockBreakerItem, .pureSwiftItem:
+                return nil
+        }
+
+        return interactionResult(for: result)
+    }
+
+    private static func modItem(for item: Item) -> ModItem? {
+        ModItem.allCases.first { modItem in
+            guard let registeredItem = registeredItem(for: modItem) else {
+                return false
+            }
+            return item.equals(registeredItem)
+        }
+    }
+
+    private static func registeredItem(
+        for modItem: ModItem
+    ) -> Item? {
+        let identifierClass = try! JavaClass<Identifier>()
+        let builInRegistriesClass = try! JavaClass<MinecraftBuiltInRegistries>()
+
+        let identifier = identifierClass.fromNamespaceAndPath(
+            modID,
+            modItem.rawValue
+        )
+
+        guard
+            let defaultedRegistry = builInRegistriesClass.ITEM,
+            let itemRegistry = defaultedRegistry.as(Registry<Item>.self)
+        else {
+            return nil
+        }
+
+        return itemRegistry.getValue(identifier)
+    }
+
+    private static func interactionResult(
+        for result: Int32?
+    ) -> InteractionResult? {
+        let interactionResultClass =
+            try! JavaClass<InteractionResult>()
+
+        return switch result {
+            case 0: interactionResultClass.PASS?.as(InteractionResult.self)
+            case 1: interactionResultClass.SUCCESS?.as(InteractionResult.self)
+            case 2: interactionResultClass.CONSUME?.as(InteractionResult.self)
+            case 3: interactionResultClass.FAIL?.as(InteractionResult.self)
+            default: nil
+        }
+    }
+
     public static func onUse(_ levelObject: JavaObject, _ playerObject: JavaObject) -> Int32 {
         let level = Level(javaThis: levelObject.javaThis, environment: levelObject.javaEnvironment)
 

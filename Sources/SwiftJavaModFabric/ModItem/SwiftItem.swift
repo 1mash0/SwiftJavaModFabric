@@ -1,4 +1,10 @@
 import MinecraftJavaAPI
 import SwiftJava
 
-class SwiftItem: Item {}
+final class SwiftBridgeItem: Item {}
+
+final class WalkingSpeedItem: Item {}
+
+final class IOSDCBadgeItem: Item {}
+
+final class SwiftItem: Item {}
