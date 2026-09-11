@@ -145,6 +145,10 @@ java {
 	targetCompatibility = JavaVersion.VERSION_25
 }
 
+tasks.named("sourcesJar") {
+	duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+}
+
 jar {
 	def projectName = project.name
 	inputs.property "projectName", projectName
