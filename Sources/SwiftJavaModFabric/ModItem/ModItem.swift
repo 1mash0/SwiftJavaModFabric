@@ -92,4 +92,13 @@ extension ModItem {
 
         return itemRegistry.getValue(identifier)
     }
+
+    static func find(for item: Item) -> ModItem? {
+        allCases.first { modItem in
+            guard let registeredItem = modItem.registeredItem else {
+                return false
+            }
+            return item.equals(registeredItem)
+        }
+    }
 }

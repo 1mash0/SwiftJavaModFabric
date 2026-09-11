@@ -19,35 +19,10 @@ public func initializeMod() {
 }
 
 private func registerItemUseCallback() {
-    let fabricLoaderClass = try! JavaClass<FabricLoader>()
-
-    guard
-        let loader = fabricLoaderClass.getInstance(),
-        let containerOptional = loader.getModContainer(modID),
-        let container = containerOptional.orElseThrow()
-    else {
-        fatalError("Failed to get ModContainer")
-    }
-
-    let languageAdapterClass = try! JavaClass<FabricLanguageAdapter>()
-
-    guard let adapter = languageAdapterClass.getDefault() else {
-        fatalError("Failed to get LanguageAdapter")
-    }
-
-    let callbackClass = try! JavaClass<FabricItemUseCallback>()
-
-    let callback: FabricItemUseCallback
-
-    do {
-        callback = try adapter.create(
-            container,
-            "com.example.swift.ModItemBridge::onItemUse",
-            callbackClass
-        )
-    } catch {
-        fatalError("Failed to create ItemEvents.UseCallback: \(error)")
-    }
+    let callback = FabricCallback.make(
+        "com.example.swift.ModItemBridge::onItemUse",
+        as: FabricItemUseCallback.self
+    )
 
     let itemEventsClass = try! JavaClass<FabricItemEvents>()
 
@@ -59,35 +34,10 @@ private func registerItemUseCallback() {
 }
 
 private func registerCreativeTabCallback() {
-    let fabricLoaderClass = try! JavaClass<FabricLoader>()
-
-    guard
-        let loader = fabricLoaderClass.getInstance(),
-        let containerOptional = loader.getModContainer(modID),
-        let container = containerOptional.orElseThrow()
-    else {
-        fatalError("Failed to get ModContainer")
-    }
-
-    let languageAdapterClass = try! JavaClass<FabricLanguageAdapter>()
-
-    guard let adapter = languageAdapterClass.getDefault() else {
-        fatalError("Failed to get LanguageAdapter")
-    }
-
-    let callbackClass = try! JavaClass<FabricCreativeModeTabEventsModifyOutput>()
-
-    let callback: FabricCreativeModeTabEventsModifyOutput
-
-    do {
-        callback = try adapter.create(
-            container,
-            "com.example.swift.ModItemBridge::modifyCreativeTab",
-            callbackClass
-        )
-    } catch {
-        fatalError("Failed to create CreativeModeTabEvents.ModifyOutput: \(error)")
-    }
+    let callback = FabricCallback.make(
+        "com.example.swift.ModItemBridge::modifyCreativeTab",
+        as: FabricCreativeModeTabEventsModifyOutput.self
+    )
 
     let creativeModeTabsClass = try! JavaClass<MinecraftCreativeModeTabs>()
 
@@ -109,33 +59,10 @@ public func initializeClientMod() {
         modID,
         "hud"
     )
-
-    let fabricLoaderClass = try! JavaClass<FabricLoader>()
-    guard
-        let loader = fabricLoaderClass.getInstance(),
-        let containerOptional = loader.getModContainer(modID),
-        let container = containerOptional.orElseThrow()
-    else {
-        fatalError("Failed to get ModContainer")
-    }
-
-    let languageAdapterClass = try! JavaClass<FabricLanguageAdapter>()
-    guard let languageAdapter = languageAdapterClass.getDefault() else {
-        fatalError("Failed to get LanguageAdapter")
-    }
-
-    let hudElementClass = try! JavaClass<FabricHudElement>()
-
-    let element: FabricHudElement
-    do {
-        element = try languageAdapter.create(
-            container,
-            "com.example.swift.HudRenderer::renderHudElement",
-            hudElementClass
-        )
-    } catch {
-        fatalError("Failed to create HudElement: \(error)")
-    }
+    let element = FabricCallback.make(
+        "com.example.swift.HudRenderer::renderHudElement",
+        as: FabricHudElement.self
+    )
 
     let registryClass = try! JavaClass<FabricHudElementRegistry>()
     registryClass.addLast(

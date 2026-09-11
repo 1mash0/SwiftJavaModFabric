@@ -13,7 +13,7 @@ public enum ModItemBridge {
             let hand = handObject.as(FabricInteractionHand.self),
             let itemStack = player.getItemInHand(hand),
             let heldItem = itemStack.getItem(),
-            let modItem = Self.modItem(for: heldItem),
+            let modItem = ModItem.find(for: heldItem),
             let itemType = modItem.itemType
         else {
             return nil
@@ -39,15 +39,6 @@ public enum ModItemBridge {
                 continue
             }
             output.accept(itemLike)
-        }
-    }
-
-    private static func modItem(for item: Item) -> ModItem? {
-        ModItem.allCases.first { modItem in
-            guard let registeredItem = modItem.registeredItem else {
-                return false
-            }
-            return item.equals(registeredItem)
         }
     }
 
