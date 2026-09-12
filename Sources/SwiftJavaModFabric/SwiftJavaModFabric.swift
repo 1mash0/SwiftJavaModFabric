@@ -10,10 +10,7 @@ public enum SwiftBridge {
 let modID = "swift-java-mod-fabric"
 
 public func initializeMod() {
-    ModLogger.info("Hello Fabric world from Swift!")
-
     ModItem.initialize()
-
     registerItemUseCallback()
     registerCreativeTabCallback()
 }

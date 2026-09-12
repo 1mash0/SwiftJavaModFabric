@@ -43,17 +43,17 @@ public enum ModItemBridge {
     }
 
     private static func interactionResult(
-        for result: Int32?
+        for result: SwiftItemUseResult
     ) -> InteractionResult? {
         let interactionResultClass =
             try! JavaClass<InteractionResult>()
 
         return switch result {
-            case 0: interactionResultClass.PASS?.as(InteractionResult.self)
-            case 1: interactionResultClass.SUCCESS?.as(InteractionResult.self)
-            case 2: interactionResultClass.CONSUME?.as(InteractionResult.self)
-            case 3: interactionResultClass.FAIL?.as(InteractionResult.self)
-            default: nil
+            case .pass: interactionResultClass.PASS?.as(InteractionResult.self)
+            case .success: interactionResultClass.SUCCESS?.as(InteractionResult.self)
+            case .consume: interactionResultClass.CONSUME?.as(InteractionResult.self)
+            case .fail: interactionResultClass.FAIL?.as(InteractionResult.self)
+            case .delegate: nil
         }
     }
 }

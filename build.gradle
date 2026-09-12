@@ -84,7 +84,10 @@ repositories {
 	mavenLocal()
 }
 
-def swiftLibraryDir = file(".build/out/Products/Debug").absolutePath
+def swiftLibraryDir = providers.exec {
+    workingDir projectDir
+    commandLine "swift", "build", "--show-bin-path"
+}.standardOutput.asText.get().trim()
 
 loom {
 	splitEnvironmentSourceSets()
